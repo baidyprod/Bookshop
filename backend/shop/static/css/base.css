@@ -3,6 +3,11 @@ width: auto;
 height: 40px;
 }
 
+#cart-detail {
+width: auto;
+height: 20px;
+}
+
 .navbar-brand, .collapse {
   margin-left: 10px;
   margin-right: 10px;
