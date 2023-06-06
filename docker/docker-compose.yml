@@ -7,13 +7,15 @@ services:
       dockerfile: docker/shop/Dockerfile
     networks:
       - shop_store_network
-      - shop_db_network
+      - shop_network
     ports:
       - 8000:8000
     volumes:
       - ../backend/shop:/app
     depends_on:
       - db_shop
+      - redis
+      - celery
     restart: on-failure
     environment:
       DB_NAME: "shop"
@@ -28,7 +30,7 @@ services:
     ports:
       - 5433:5432
     networks:
-      - shop_db_network
+      - shop_network
     expose:
       - 5432
     volumes:
@@ -39,6 +41,49 @@ services:
       POSTGRES_PASSWORD: 'postgres'
       POSTGRES_DB: 'shop'
 
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - 6379:6379
+    networks:
+      - shop_network
+    restart: on-failure
+
+  celery:
+    container_name: celery
+    build:
+      context: ..
+      dockerfile: docker/shop/celery/Dockerfile
+    networks:
+      - shop_store_network
+      - shop_network
+    ports:
+      - 8002:8000
+    depends_on:
+      - rabbitmq
+    restart: on-failure
+    environment:
+      CELERY_BROKER_URL: "amqp://rabbitmq"
+      CELERY_RESULT_BACKEND: "redis://redis:6379"
+      DB_NAME: "shop"
+      DB_USER: "postgres"
+      DB_PASSWORD: "postgres"
+      DB_HOST: "db_shop"
+      DB_PORT: "5432"
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - shop_network
+    depends_on:
+      - redis
+    restart: on-failure
+
   store:
     container_name: store
     build:
@@ -46,7 +91,7 @@ services:
       dockerfile: docker/store/Dockerfile
     networks:
       - shop_store_network
-      - store_db_network
+      - store_network
     ports:
       - 8001:8001
     volumes:
@@ -67,7 +112,7 @@ services:
     ports:
       - 5432:5432
     networks:
-      - store_db_network
+      - store_network
     expose:
       - 5432
     volumes:
@@ -78,10 +123,9 @@ services:
       POSTGRES_PASSWORD: 'postgres'
       POSTGRES_DB: 'store'
 
-
 networks:
-  shop_db_network:
-  store_db_network:
+  shop_network:
+  store_network:
   shop_store_network:
 
 volumes:
