@@ -1,5 +1,6 @@
 from urllib.parse import urlencode
 
+from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
@@ -10,8 +11,9 @@ from django.views import generic
 from django.views.decorators.cache import cache_page
 
 from shop.custom_cart import CustomCart
-from shop.forms import BookSearchForm, ModifiedUserCreationForm, PriceFilterForm
-from shop.models import Book
+from shop.forms import BookSearchForm, ModifiedUserCreationForm, PriceFilterForm, UserAddressForm
+from shop.models import Book, Order, OrderItem
+from shop.tasks import create_order_in_api as celery_create_order
 
 User = get_user_model()
 
@@ -41,7 +43,6 @@ class UserProfile(generic.DetailView):
         return user
 
 
-@method_decorator(cache_page(600), name='dispatch')
 class BookList(generic.ListView):
     model = Book
     template_name = 'shop/home.html'
@@ -118,5 +119,53 @@ def cart_clear(request):
 
 
 @login_required(login_url="/accounts/login")
-def cart_detail(request):
-    return render(request, 'cart/cart_detail.html')
+def cart_detail_and_create_order(request):
+    if request.method == 'POST':
+        user_address_form = UserAddressForm(request.POST)
+        cart = CustomCart(request)
+
+        if user_address_form.is_valid():
+            delivery_address = user_address_form.cleaned_data['delivery_address']
+
+            if delivery_address:
+                order_items = []
+                order_items_dict = {}
+                order = Order(user=request.user, delivery_address=delivery_address)
+
+                for key, value in request.session.get('cart').items():
+                    book = get_object_or_404(Book, id=key)
+                    quantity_requested = value['quantity']
+
+                    if quantity_requested > book.quantity:
+                        messages.error(request, f"Cannot create order: {quantity_requested} {book.title} items are "
+                                                f"temporary unavailable. Please try again later.")
+                        return redirect('cart_detail')
+
+                    order_items.append(OrderItem(order=order, book=book, quantity=quantity_requested))
+                    order_items_dict[book.id_in_store] = quantity_requested
+
+                order.save()
+                OrderItem.objects.bulk_create(order_items)
+                data = {
+                    'user_email': request.user.email,
+                    'delivery_address': delivery_address,
+                    'order_id_in_shop': order.pk,
+                    'order_items': order_items_dict
+                }
+                celery_create_order.delay(data)
+                messages.success(request, "Order created successfully.")
+                cart.clear()
+                return redirect('home')
+
+            else:
+                messages.error(request, "Cannot create order: Delivery address is empty.")
+                return redirect('cart_detail')
+        else:
+            messages.error(request, "Cannot create order: Invalid form data.")
+            return redirect('cart_detail')
+
+    else:
+        user_address_form = UserAddressForm()
+
+    context = {'user_address_form': user_address_form}
+    return render(request, 'cart/cart_detail.html', context)

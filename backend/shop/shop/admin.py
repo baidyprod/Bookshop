@@ -10,6 +10,7 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ['title', ]
     list_filter = ['price', 'quantity']
     list_editable = ['price', ]
+    readonly_fields = ['pk', ]
 
 
 @admin.register(Order)

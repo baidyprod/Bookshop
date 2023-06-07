@@ -6,15 +6,19 @@
 {% block content %}
     <link rel="stylesheet" href="{% static 'css/shop/home.css' %}">
 
-    {% if messages %}
-        <div class="alert alert-success">
-            <ul class="list-unstyled">
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% elif message.tags == 'error' %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
 
     <div class="row mb-3">
     <form class="form-inline" method="get" action="{% url 'home' %}">
@@ -27,34 +31,42 @@
 
     <div>
         {% if books %}
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for book in books %}
-                        <tr>
-                            <td class="align-middle">{{ book.title }}</td>
-                            <td class="align-middle">${{ book.price }}</td>
-                            <td class="align-middle">{{ book.quantity }}</td>
-                            <td>
-                                {% if user.is_authenticated %}
-                                    <a class="btn btn-warning btn-sm" href="{% url 'cart_add' book.id %}?{{ request.GET.urlencode }}">Add to Cart</a>
-                                {% else %}
-                                    <a class="btn btn-warning btn-sm" href="{% url 'register' %}">Add to Cart</a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>In stock</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+                <tr>
+                    <td class="align-middle">{{ book.title }}</td>
+                    <td class="align-middle">${{ book.price }}</td>
+                    <td class="align-middle">
+                        {% if book.quantity > 0 %}
+                            {{ book.quantity }}
+                        {% else %}
+                            <span style="color: red;">Temporary unavailable</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if book.quantity > 0 %}
+                            {% if user.is_authenticated %}
+                                <a class="btn btn-warning btn-sm" href="{% url 'cart_add' book.id %}?{{ request.GET.urlencode }}">Add to Cart</a>
+                            {% else %}
+                                <a class="btn btn-warning btn-sm" href="{% url 'register' %}">Add to Cart</a>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
         {% else %}
-            <h2 class="text-center mb-4">No books available</h2>
+        <h2 class="text-center mb-4">No books available</h2>
         {% endif %}
     </div>
 

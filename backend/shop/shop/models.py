@@ -25,8 +25,14 @@ class Order(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='in_work')
     delivery_address = models.CharField(max_length=100)
 
+    def __str__(self):
+        return f"Order #{self.pk}"
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"Order #{self.order.pk} - Item: {self.book.title}"
