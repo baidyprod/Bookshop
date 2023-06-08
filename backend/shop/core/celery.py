@@ -10,8 +10,12 @@ app.autodiscover_tasks()
 
 
 app.conf.beat_schedule = {
-    'print-every-minute': {
+    'sync-books': {
         'task': 'shop.tasks.books_sync',
         'schedule': crontab(hour='*'),
     },
+    'sync-order-statuses': {
+        'task': 'shop.tasks.orders_sync',
+        'schedule': crontab(hour='*'),
+    }
 }

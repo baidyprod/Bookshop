@@ -11,6 +11,7 @@ class AbstractBaseModel(models.Model):
 class Book(AbstractBaseModel):
     title = models.CharField(max_length=100)
     price = models.DecimalField(decimal_places=2, max_digits=10)
+    quantity = models.PositiveIntegerField()
 
     class Meta:
         verbose_name = 'Book'
@@ -18,18 +19,6 @@ class Book(AbstractBaseModel):
 
     def __str__(self):
         return self.title
-
-
-class BookItem(AbstractBaseModel):
-    book_id = models.ForeignKey(Book, on_delete=models.CASCADE)
-    place = models.CharField(max_length=100)
-
-    class Meta:
-        verbose_name = 'Book Item'
-        verbose_name_plural = 'Book Items'
-
-    def __str__(self):
-        return self.book_id.title
 
 
 class Order(AbstractBaseModel):
@@ -48,21 +37,18 @@ class Order(AbstractBaseModel):
         verbose_name = 'Order'
         verbose_name_plural = 'Orders'
 
+    def __str__(self):
+        return f"Order #{self.pk}"
+
 
 class OrderItem(AbstractBaseModel):
-    order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
-    book_id = models.ForeignKey(Book, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
 
     class Meta:
         verbose_name = 'Order Item'
         verbose_name_plural = 'Order Items'
 
-
-class OrderItemBookItem(AbstractBaseModel):
-    order_item_id = models.ForeignKey(OrderItem, on_delete=models.CASCADE)
-    book_item_id = models.ForeignKey(BookItem, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = 'Order Item Book Item'
-        verbose_name_plural = 'Order Item Book Items'
+    def __str__(self):
+        return f"Order #{self.order.pk} - Item: {self.book.title}"

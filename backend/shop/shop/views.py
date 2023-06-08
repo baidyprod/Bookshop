@@ -3,6 +3,7 @@ from urllib.parse import urlencode
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.urls import reverse_lazy
@@ -75,6 +76,26 @@ class BookList(generic.ListView):
         context = super().get_context_data(**kwargs)
         context['filter_form'] = PriceFilterForm(self.request.GET)
         context['search_form'] = BookSearchForm(self.request.GET)
+        return context
+
+
+class OrderList(LoginRequiredMixin, generic.ListView):
+    model = Order
+    template_name = 'shop/my_orders.html'
+    context_object_name = 'orders'
+    ordering = ['-created_at', ]
+    paginate_by = 20
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(user=self.request.user)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        orders = context['orders']
+        order_items = OrderItem.objects.filter(order__in=orders)
+        context['order_details'] = order_items
         return context
 
 

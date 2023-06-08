@@ -1,40 +1,36 @@
 from django.contrib import admin
 
-from store.models import Book, BookItem, Order, OrderItem, OrderItemBookItem
+from store.models import Book, Order, OrderItem
+
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 0
 
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['title', 'price']
+    list_display = ['title', 'price', 'quantity']
     list_per_page = 20
     search_fields = ['title', ]
-    list_filter = ['price', ]
-    list_editable = ['price', ]
-
-
-@admin.register(BookItem)
-class BookItemAdmin(admin.ModelAdmin):
-    autocomplete_fields = ['book_id', ]
-    list_display = ['get_book_title', 'place']
-    list_per_page = 20
-    search_fields = ['place', ]
-
-    def get_book_title(self, obj):
-        return obj.book_id.title
-
-    get_book_title.short_description = 'Book Title'
+    list_editable = ['price', 'quantity']
+    sortable_by = ['price', 'quantity']
 
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['__str__', 'user_email', 'status', 'created_at']
+    list_filter = ['status']
+    readonly_fields = ['created_at']
+    inlines = [OrderItemInline, ]
+    search_fields = ['user_email', ]
 
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['order', 'book', 'quantity']
 
+    def book(self, obj):
+        return obj.book.title
 
-@admin.register(OrderItemBookItem)
-class OrderItemBookItemAdmin(admin.ModelAdmin):
-    pass
+    book.admin_order_field = 'book__title'

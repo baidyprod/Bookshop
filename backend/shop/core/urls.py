@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 
-from shop.views import BookList, Register, UserProfile, cart_add, cart_clear, cart_detail_and_create_order, \
+from shop.views import BookList, Register, UserProfile, OrderList, cart_add, cart_clear, cart_detail_and_create_order, \
     item_clear, item_decrement, item_increment
 
 urlpatterns = [
@@ -21,6 +21,8 @@ urlpatterns = [
     path("accounts/register/", Register.as_view(), name="register"),
 
     path("profile/<str:username>/", UserProfile.as_view(), name="profile"),
+
+    path("my_orders/", OrderList.as_view(), name="my_orders"),
 
 ]
 

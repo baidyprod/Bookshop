@@ -144,3 +144,7 @@ CACHES = {
 
 CELERY_BROKER_URL = 'amqp://rabbitmq'
 CELERY_RESULT_BACKEND = "redis://redis:6379"
+
+EMAIL_HOST = 'smtp-server'
+EMAIL_PORT = '1025'
+DEFAULT_FROM_EMAIL = 'noreply@bookshop.com'

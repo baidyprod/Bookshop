@@ -1,18 +1,12 @@
 from rest_framework import viewsets
 
-from store.models import Book, BookItem, Order, OrderItem, OrderItemBookItem
-from store.serializers import BookItemSerializer, BookSerializer, OrderItemBookItemSerializer, OrderItemSerializer, \
-    OrderSerializer
+from store.models import Book, Order, OrderItem
+from store.serializers import BookSerializer, OrderItemSerializer, OrderSerializer
 
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all().order_by('-created_at')
     serializer_class = BookSerializer
-
-
-class BookItemViewSet(viewsets.ModelViewSet):
-    queryset = BookItem.objects.all().order_by('-created_at')
-    serializer_class = BookItemSerializer
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -24,7 +18,6 @@ class OrderItemViewSet(viewsets.ModelViewSet):
     queryset = OrderItem.objects.all().order_by('-created_at')
     serializer_class = OrderItemSerializer
 
-
-class OrderItemBookItemViewSet(viewsets.ModelViewSet):
-    queryset = OrderItemBookItem.objects.all().order_by('-created_at')
-    serializer_class = OrderItemBookItemSerializer
+    def get_serializer(self, *args, **kwargs):
+        kwargs['many'] = True
+        return super().get_serializer(*args, **kwargs)
