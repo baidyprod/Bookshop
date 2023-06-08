@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.urls import reverse_lazy
 from django.views import generic
@@ -119,7 +120,9 @@ def item_increment(request, id):
     cart = CustomCart(request)
     product = Book.objects.get(id=id)
     cart.add(product=product)
-    return redirect("cart_detail")
+    cart_items = request.session.get('cart')
+    quantity = cart_items[f'{id}']['quantity']
+    return JsonResponse({'quantity': quantity})
 
 
 @login_required(login_url="/accounts/login")
@@ -127,7 +130,9 @@ def item_decrement(request, id):
     cart = CustomCart(request)
     product = Book.objects.get(id=id)
     cart.decrement(product=product)
-    return redirect("cart_detail")
+    cart_items = request.session.get('cart')
+    quantity = cart_items[f'{id}']['quantity']
+    return JsonResponse({'quantity': quantity})
 
 
 @login_required(login_url="/accounts/login")
