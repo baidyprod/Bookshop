@@ -55,7 +55,7 @@ def orders_sync():
             subject = 'Your order status was changed!'
             message = 'Check the status of your orders in "My orders" tab.'
             from_email = settings.DEFAULT_FROM_EMAIL
-            to_email = order.user.email
+            to_email = [order.user.email, ]
             send_mail.delay(subject, message, from_email, to_email)
 
         order, _ = Order.objects.update_or_create(
@@ -85,10 +85,7 @@ def create_order_in_api(data):
     order_items_post = requests.post('http://store:8001/orderitems/', headers=headers, json=order_items_json)
 
     subject = 'You have successfully created an order!'
-    message = f'''Here are your order details:
-    Items:
-    {', '.join(f"{k}: {v}" for k, v in data['order_items'].items())}
-    Delivery address: {data['delivery_address']}'''
+    message = f'''Here are your order details:\nItems:\n{', '.join(f"{Book.objects.get(id_in_store=k).title}: {v}" for k, v in data['order_items'].items())}\nDelivery address: {data['delivery_address']}'''  # noqa
     from_email = settings.DEFAULT_FROM_EMAIL
-    to_email = data['user_email']
+    to_email = [data['user_email'], ]
     send_mail.delay(subject, message, from_email, to_email)

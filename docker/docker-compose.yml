@@ -126,6 +126,7 @@ services:
       POSTGRES_DB: 'store'
 
   smtp-server:
+    container_name: smtp-server
     image: mailhog/mailhog
     expose:
       - 1025
@@ -135,6 +136,8 @@ services:
       - 8025:8025
     networks:
       - mailhog_network
+    depends_on:
+      - celery
 
 networks:
   shop_network:

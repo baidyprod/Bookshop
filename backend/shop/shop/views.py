@@ -7,9 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
 from django.views import generic
-from django.views.decorators.cache import cache_page
 
 from shop.custom_cart import CustomCart
 from shop.forms import BookSearchForm, ModifiedUserCreationForm, PriceFilterForm, UserAddressForm

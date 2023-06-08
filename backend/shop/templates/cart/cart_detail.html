@@ -37,7 +37,7 @@
                 <td class="align-middle">{{ value.title }}</td>
                 <td class="align-middle">${{ value.price }}</td>
                 <td class="align-middle">{{ value.quantity }}</td>
-                <td class="align-middle">{{ value.price|multiply:value.quantity|floatformat:2 }}</td>
+                <td class="align-middle">${{ value.price|multiply:value.quantity|floatformat:2 }}</td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
                     {% if value.quantity > 1 %}
