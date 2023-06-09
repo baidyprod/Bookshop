@@ -62,10 +62,12 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    docker-compose -f docker/docker-compose.yml build
    docker-compose -f docker/docker-compose.yml up
    ```
+   Wait a bit until terminal logs stop.
+   This will be our terminal window in which the project is running. DON'T CLOSE IT UNTIL MY PROJECT IS IN USE.
    P.S.: If "docker-compose" not working, try writing like this: "docker compose"
 
 6. Finally, we can access our shop service: localhost:8000, store service: localhost:8001, mailhog: localhost:8025
-7. This is not all. Now let's add some books to our store. But at first we need to create an admin user for store. Open a new console tab in the root folder and write these commands:
+7. This is not all. Now let's add some books to our store. But at first we need to create an admin user for store. Open a new terminal window in the root folder and write these commands:
     ```shell
    docker-compose -f docker/docker-compose.yml exec store bash
    ```
@@ -97,7 +99,12 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    You will have to enter what shell is asking.
 10. Finally, you are ready to go to localhost:8001/admin and to finally create some books.
 11. You are welcome to return to localhost:8000 to test my project further.
+12. To stop the project just click CMD+C (CTRL+C) and wait until all containers stop.
+13. To rerun the project go to the project root folder and paste this command:
+   ```shell
+   docker-compose -f docker/docker-compose.yml up
+   ```
 
-P.S.: Books are being synchronised every 5 minutes and orders statuses are being synchronised every 10 minutes. So keep patient ;)
+P.S.: Books are being synchronized every 5 minutes and orders statuses are being synchronized every 10 minutes. So keep patient ;)
 
 __Thank You and have fun!__
