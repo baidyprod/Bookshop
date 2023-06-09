@@ -93,7 +93,7 @@ class OrderList(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         orders = context['orders']
-        order_items = OrderItem.objects.filter(order__in=orders)
+        order_items = OrderItem.objects.filter(order__in=orders).prefetch_related('order')
         context['order_details'] = order_items
         return context
 
