@@ -34,9 +34,9 @@ function calculateTotalOrderPrice() {
   totalPriceElement.text('Total order price: $' + sum.toFixed(2));
 }
 
-function incrementItem(id) {
+function incrementItem(id, url) {
     $.ajax({
-        url: "/cart/item_increment/__id__/".replace('__id__', id),
+        url: url,
         method: 'GET',
         success: function(response) {
             updateItem(id, response.quantity);
@@ -48,9 +48,9 @@ function incrementItem(id) {
     });
 }
 
-function decrementItem(id) {
+function decrementItem(id, url) {
     $.ajax({
-        url: "/cart/item_decrement/__id__/".replace('__id__', id),
+        url: url,
         method: 'GET',
         success: function(response) {
             updateItem(id, response.quantity);
