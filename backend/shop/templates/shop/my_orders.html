@@ -33,10 +33,8 @@
         {% for order in orders %}
           <tr>
             <td class="align-middle">
-                {% for order_detail in order_details %}
-                {% if order_detail.order == order %}
-                {{ order_detail.book }}: {{ order_detail.quantity }} <br>
-                {% endif %}
+                {% for order_item in order.order_items %}
+                    {{ order_item.book }}: {{ order_item.quantity }} <br>
                 {% endfor %}
             </td>
             <td class="align-middle">

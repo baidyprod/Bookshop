@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.urls import reverse_lazy
@@ -93,12 +94,19 @@ class OrderList(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         orders = context['orders']
-        order_items = OrderItem.objects.filter(order__in=orders).prefetch_related('order')
-        context['order_details'] = order_items
+
+        prefetch_order_items = Prefetch(
+            'orderitem_set',
+            queryset=OrderItem.objects.select_related('book'),
+            to_attr='order_items'
+        )
+        orders = orders.prefetch_related(prefetch_order_items)
+
+        context['orders'] = orders
         return context
 
 
-@login_required(login_url="/accounts/login")
+@login_required(login_url=reverse_lazy('login'))
 def cart_add(request, id):
     cart = CustomCart(request)
     product = Book.objects.get(id=id)
@@ -107,7 +115,7 @@ def cart_add(request, id):
     return redirect(redirect_url)
 
 
-@login_required(login_url="/accounts/login")
+@login_required(login_url=reverse_lazy('login'))
 def item_clear(request, id):
     cart = CustomCart(request)
     product = Book.objects.get(id=id)
@@ -115,7 +123,7 @@ def item_clear(request, id):
     return redirect("cart_detail")
 
 
-@login_required(login_url="/accounts/login")
+@login_required(login_url=reverse_lazy('login'))
 def item_increment(request, id):
     cart = CustomCart(request)
     product = Book.objects.get(id=id)
@@ -125,7 +133,7 @@ def item_increment(request, id):
     return JsonResponse({'quantity': quantity})
 
 
-@login_required(login_url="/accounts/login")
+@login_required(login_url=reverse_lazy('login'))
 def item_decrement(request, id):
     cart = CustomCart(request)
     product = Book.objects.get(id=id)
@@ -135,14 +143,14 @@ def item_decrement(request, id):
     return JsonResponse({'quantity': quantity})
 
 
-@login_required(login_url="/accounts/login")
+@login_required(login_url=reverse_lazy('login'))
 def cart_clear(request):
     cart = CustomCart(request)
     cart.clear()
     return redirect("cart_detail")
 
 
-@login_required(login_url="/accounts/login")
+@login_required(login_url=reverse_lazy('login'))
 def cart_detail_and_create_order(request):
     if request.method == 'POST':
         user_address_form = UserAddressForm(request.POST)
