@@ -104,6 +104,7 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    ```shell
    docker-compose -f docker/docker-compose.yml up
    ```
+   All data will be the same as in the previous sessions!
 
 P.S.: Books are being synchronized every 5 minutes and orders statuses are being synchronized every 10 minutes. So keep patient ;)
 
