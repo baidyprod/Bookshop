@@ -12,10 +12,10 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'sync-books': {
         'task': 'shop.tasks.books_sync',
-        'schedule': crontab(minute='0'),  # crontab(hour='*') for every minute
+        'schedule': crontab(minute='*/5'),
     },
     'sync-order-statuses': {
         'task': 'shop.tasks.orders_sync',
-        'schedule': crontab(minute='*/10'),  # crontab(hour='*') for every minute
+        'schedule': crontab(minute='*/10'),
     }
 }
