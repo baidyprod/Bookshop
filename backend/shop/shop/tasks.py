@@ -1,13 +1,12 @@
 import os
-
-from dotenv import load_dotenv
-
 from decimal import Decimal
+
+from celery import shared_task
 
 from django.conf import settings
 from django.core.mail import send_mail as django_send_mail
 
-from celery import shared_task
+from dotenv import load_dotenv
 
 import requests
 
@@ -61,7 +60,7 @@ def orders_sync():
         order, _ = Order.objects.update_or_create(
             id=order_data['order_id_in_shop'],
             defaults={'status': order_data['status']}
-            )
+        )
 
 
 @shared_task
@@ -82,7 +81,7 @@ def create_order_in_api(data):
     order_items_json = [{'order': order_post.json()["id"], 'book': k, 'quantity': v}
                         for k, v in data['order_items'].items()]
 
-    order_items_post = requests.post('http://store:8001/orderitems/', headers=headers, json=order_items_json)
+    order_items_post = requests.post('http://store:8001/orderitems/', headers=headers, json=order_items_json)  # noqa
 
     subject = 'You have successfully created an order!'
     message = f'''Here are your order details:\nItems:\n{', '.join(f"{Book.objects.get(id_in_store=k).title}: {v}" for k, v in data['order_items'].items())}\nDelivery address: {data['delivery_address']}'''  # noqa

@@ -133,6 +133,15 @@ INTERNAL_IPS = [
 
 ]
 
+def show_toolbar(request):  # noqa
+    return True
+
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': 'core.settings.show_toolbar'
+
+}
+
 LOGIN_REDIRECT_URL = 'home'
 
 CACHES = {
