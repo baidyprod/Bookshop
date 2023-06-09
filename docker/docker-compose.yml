@@ -8,6 +8,7 @@ services:
     networks:
       - shop_store_network
       - shop_network
+      - nginx_network
     ports:
       - 8000:8000
     volumes:
@@ -94,6 +95,7 @@ services:
       - shop_store_network
       - store_network
       - mailhog_network
+      - nginx_network
     ports:
       - 8001:8001
     volumes:
@@ -136,14 +138,33 @@ services:
       - 8025:8025
     networks:
       - mailhog_network
+      - nginx_network
     depends_on:
       - celery
+
+  nginx:
+    container_name: nginx
+    build:
+      context: ..
+      dockerfile: docker/nginx/Dockerfile
+    networks:
+      - nginx_network
+    ports:
+      - 8080:8000
+      - 8081:8001
+      - 8082:8025
+    depends_on:
+      - shop
+      - store
+      - smtp-server
+    restart: on-failure
 
 networks:
   shop_network:
   store_network:
   shop_store_network:
   mailhog_network:
+  nginx_network:
 
 volumes:
   db_shop_volume:
