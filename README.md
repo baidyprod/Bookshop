@@ -99,7 +99,7 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    You will have to enter what shell is asking.
 10. Finally, you are ready to go to localhost:8001/admin and to finally create some books.
 11. You are welcome to return to localhost:8000 to test my project further.
-12. To stop the project just click CMD+C (CTRL+C) and wait until all containers stop.
+12. To stop the project just press CMD+C (CTRL+C) and wait until all containers stop.
 13. To rerun the project go to the project root folder and paste this command:
    ```shell
    docker-compose -f docker/docker-compose.yml up
