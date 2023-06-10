@@ -106,6 +106,6 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    ```
    All data will be the same as in the previous sessions!
 
-P.S.: Books are being synchronized every 5 minutes and orders statuses are being synchronized every 10 minutes. So keep patient ;)
+P.S.: Books are being synchronized every 2 minutes and orders statuses are being synchronized every 1 minute. So keep patient ;)
 
 __Thank You and have fun!__
