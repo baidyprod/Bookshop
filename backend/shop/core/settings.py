@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'cart',
     'shop',
+    'cart_app',
+    'accounts',
 
 ]
 
@@ -142,7 +144,7 @@ DEBUG_TOOLBAR_CONFIG = {
 
 }
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'shop:home'
 
 CACHES = {
     'default': {

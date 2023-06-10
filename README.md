@@ -59,8 +59,8 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    ```
 5. Open terminal in root folder (Bookshop) and run:
    ```shell
-   docker-compose -f docker/docker-compose.yml build
-   docker-compose -f docker/docker-compose.yml up
+   docker-compose build
+   docker-compose up
    ```
    Wait a bit until terminal logs stop.
    This will be our terminal window in which the project is running. DON'T CLOSE IT UNTIL MY PROJECT IS IN USE.
@@ -69,7 +69,7 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
 6. Finally, we can access our shop service: localhost:8000, store service: localhost:8001, mailhog: localhost:8025
 7. This is not all. Now let's add some books to our store. But at first we need to create an admin user for store. Open a new terminal window in the root folder and write these commands:
     ```shell
-   docker-compose -f docker/docker-compose.yml exec store bash
+   docker-compose exec store bash
    ```
    ```python
    python manage.py createsuperuser
@@ -91,7 +91,7 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    Then copy the key which was printed out (WITHOUT THE QUOTES) and paste it into backend/shop/.env file into TOKEN variable quotes. Close this terminal window.
 9. Open a new terminal window in the root folder. Now we are creating a shop admin:
     ```shell
-   docker-compose -f docker/docker-compose.yml exec shop bash
+   docker-compose exec shop bash
    ```
    ```python
    python manage.py createsuperuser
@@ -102,7 +102,7 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
 12. To stop the project just press CMD+C (CTRL+C) and wait until all containers stop.
 13. To rerun the project go to the project root folder and paste this command:
    ```shell
-   docker-compose -f docker/docker-compose.yml up
+   docker-compose up
    ```
    All data will be the same as in the previous sessions!
 

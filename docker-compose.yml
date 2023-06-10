@@ -3,7 +3,7 @@ services:
   shop:
     container_name: shop
     build:
-      context: ..
+      context: .
       dockerfile: docker/shop/Dockerfile
     networks:
       - shop_store_network
@@ -12,7 +12,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ../backend/shop:/app
+      - ./backend/shop:/app
     depends_on:
       - db_shop
       - redis
@@ -54,7 +54,7 @@ services:
   celery:
     container_name: celery
     build:
-      context: ..
+      context: .
       dockerfile: docker/shop/celery/Dockerfile
     networks:
       - shop_store_network
@@ -89,7 +89,7 @@ services:
   store:
     container_name: store
     build:
-      context: ..
+      context: .
       dockerfile: docker/store/Dockerfile
     networks:
       - shop_store_network
@@ -99,7 +99,7 @@ services:
     ports:
       - 8001:8001
     volumes:
-      - ../backend/store:/app
+      - ./backend/store:/app
     depends_on:
       - db_store
     restart: on-failure
@@ -145,7 +145,7 @@ services:
   nginx:
     container_name: nginx
     build:
-      context: ..
+      context: .
       dockerfile: docker/nginx/Dockerfile
     networks:
       - nginx_network
