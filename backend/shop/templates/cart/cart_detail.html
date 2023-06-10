@@ -34,7 +34,7 @@
         <tbody>
             {% for key, value in request.session.cart.items %}
             <tr>
-                <td class="align-middle">{{ value.title }}</td>
+                <td class="align-middle"><a href="{% url 'shop:book_detail' pk=value.product_id %}">{{ value.title }}</a></td>
                 <td id="price-{{ value.product_id }}" class="align-middle">${{ value.price }}</td>
                 <td id="quantity-{{ value.product_id }}" class="align-middle">{{ value.quantity }}</td>
                 <td id="total-{{ value.product_id }}" class="align-middle">${{ value.price|multiply:value.quantity|floatformat:2 }}</td>

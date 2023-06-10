@@ -135,6 +135,8 @@ INTERNAL_IPS = [
 
 ]
 
+DOMAIN = 'http://127.0.0.1:8000'  # Used to form a link to a specific page in email for users
+
 def show_toolbar(request):  # noqa
     return True
 

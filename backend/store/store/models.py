@@ -1,16 +1,17 @@
 from django.db import models
 
 
-class AbstractBaseModel(models.Model):
+class CreatedAtMixin(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         abstract = True
 
 
-class Book(AbstractBaseModel):
+class Book(CreatedAtMixin):
     title = models.CharField(max_length=100)
     price = models.DecimalField(decimal_places=2, max_digits=10)
+    description = models.TextField(blank=True, null=True)
     quantity = models.PositiveIntegerField()
 
     class Meta:
@@ -21,11 +22,15 @@ class Book(AbstractBaseModel):
         return self.title
 
 
-class Order(AbstractBaseModel):
+class Order(CreatedAtMixin):
+    IN_WORK = 'in_work'
+    SUCCESS = 'success'
+    FAIL = 'fail'
+
     STATUS_CHOICES = (
-        ('in_work', 'In Work'),
-        ('success', 'Success'),
-        ('fail', 'Fail'),
+        (IN_WORK, 'In Work'),
+        (SUCCESS, 'Success'),
+        (FAIL, 'Fail'),
     )
 
     user_email = models.EmailField()
@@ -41,7 +46,7 @@ class Order(AbstractBaseModel):
         return f"Order #{self.pk}"
 
 
-class OrderItem(AbstractBaseModel):
+class OrderItem(CreatedAtMixin):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()

@@ -35,10 +35,10 @@
           <tr>
                 <td class="align-middle">
                     {% for order_item in order.order_items %}
-                        {{ order_item.book }}: {{ order_item.quantity }} <br>
+                    <a href="{% url 'shop:book_detail' pk=order_item.book.id %}">{{ order_item.book }}</a>: {{ order_item.quantity }}<br>
                     {% endfor %}
                 </td>
-                <td class="align-middle">order.created_at</td>
+                <td class="align-middle">{{ order.created_at }}</td>
                 <td class="align-middle">
                   {% if order.status == 'in_work' %}
                     <span class="text-warning">{{ order.get_status_display }}</span>

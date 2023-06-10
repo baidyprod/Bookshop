@@ -43,7 +43,7 @@
         <tbody>
             {% for book in books %}
                 <tr>
-                    <td class="align-middle">{{ book.title }}</td>
+                    <td class="align-middle"><a href="{% url 'shop:book_detail' pk=book.id %}">{{ book.title }}</a></td>
                     <td class="align-middle">${{ book.price }}</td>
                     <td class="align-middle">
                         {% if book.quantity > 0 %}

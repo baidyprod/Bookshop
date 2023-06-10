@@ -4,6 +4,7 @@ from celery import shared_task
 
 from django.conf import settings
 from django.core.mail import send_mail as django_send_mail
+from django.urls import reverse_lazy
 
 from dotenv import load_dotenv
 
@@ -36,7 +37,8 @@ def books_sync():
             defaults={
                 'title': book_data['title'],
                 'price': Decimal(book_data['price']),
-                'quantity': int(book_data['quantity'])
+                'quantity': int(book_data['quantity']),
+                'description': book_data['description']
             }
         )
 
@@ -51,7 +53,7 @@ def orders_sync():
 
         if order.status != order_data['status']:
             subject = 'Your order status was changed!'
-            message = 'Check the status of your orders in "My orders" tab.'
+            message = f'Check the status of your orders in "My orders" tab: {settings.DOMAIN}{reverse_lazy("shop:my_orders")}'  # noqa
             from_email = settings.DEFAULT_FROM_EMAIL
             to_email = [order.user.email, ]
             send_mail.delay(subject, message, from_email, to_email)

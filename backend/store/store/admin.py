@@ -22,15 +22,15 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'user_email', 'status', 'created_at']
     list_filter = ['status']
     readonly_fields = ['created_at']
-    inlines = [OrderItemInline, ]
     search_fields = ['user_email', ]
-
-
-@admin.register(OrderItem)
-class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ['order', 'book', 'quantity']
-
-    def book(self, obj):
-        return obj.book.title
-
-    book.admin_order_field = 'book__title'
+    inlines = [OrderItemInline, ]
+#
+#
+# @admin.register(OrderItem)
+# class OrderItemAdmin(admin.ModelAdmin):
+#     list_display = ['order', 'book', 'quantity']
+#
+#     def book(self, obj):
+#         return obj.book.title
+#
+#     book.admin_order_field = 'book__title'

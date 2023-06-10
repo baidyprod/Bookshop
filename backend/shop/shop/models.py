@@ -8,6 +8,7 @@ class Book(models.Model):
     title = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField()
+    description = models.TextField(blank=True, null=True)
     id_in_store = models.PositiveIntegerField()
 
     def __str__(self):
@@ -15,10 +16,14 @@ class Book(models.Model):
 
 
 class Order(models.Model):
+    IN_WORK = 'in_work'
+    SUCCESS = 'success'
+    FAIL = 'fail'
+
     STATUS_CHOICES = (
-        ('in_work', 'In Work'),
-        ('success', 'Success'),
-        ('fail', 'Fail'),
+        (IN_WORK, 'In Work'),
+        (SUCCESS, 'Success'),
+        (FAIL, 'Fail'),
     )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)

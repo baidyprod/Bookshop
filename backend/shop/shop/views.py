@@ -44,6 +44,13 @@ class BookList(generic.ListView):
         return context
 
 
+class BookDetailView(generic.DetailView):
+    model = Book
+    template_name = 'shop/book_detail.html'
+    context_object_name = 'book'
+    pk_url_kwarg = 'pk'
+
+
 class OrderList(LoginRequiredMixin, generic.ListView):
     model = Order
     template_name = 'shop/my_orders.html'
