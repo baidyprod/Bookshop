@@ -106,9 +106,7 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    exit
    ```
    You will have to enter what shell is asking.
-10. Finally, you are ready to go to localhost:8001/admin and to finally create some books.
-11. You are welcome to return to localhost:8000 to test my project further.
-12. I have created a management command for you to populate store db with books and book items!
+10. I have created a management command for you to populate store db with books and book items!
 Just open a new terminal window in a project folder and run this command:
    ```shell
    docker-compose exec store bash
@@ -120,15 +118,15 @@ Just open a new terminal window in a project folder and run this command:
    exit
    ```
 This command will create 50 books and random quantity of book items of these books.
-14. You are welcome to go to the admin page of books and add a picture to any of them. It will be shown in the book's detail page in the shop!
-15. So, your main services are: 127.0.0.1:8000 (Shop), 127.0.0.1:8001 (Store), 127.0.0.1:8025 (Emails)
-16. To stop the project just press CMD+C (CTRL+C) and wait until all containers stop.
-17. To rerun the project go to the project root folder and paste this command:
+11. You are welcome to go to the admin page of books and add a picture to any of them. It will be shown in the book's detail page in the shop!
+12. So, your main services are: 127.0.0.1:8000 (Shop), 127.0.0.1:8001 (Store), 127.0.0.1:8025 (Emails)
+13. To stop the project just press CMD+C (CTRL+C) and wait until all containers stop.
+14. To rerun the project go to the project root folder and paste this command:
    ```shell
    docker-compose up
    ```
    All data will be the same as in the previous sessions!
-18. Especially for you, I have created a management command to clear databases in one click! Just open a shell of shop/store (Examples higher) and run this command:
+15. Especially for you, I have created a management command to clear databases in one click! Just open a shell of shop/store (Examples higher) and run this command:
    ```python
    python manage.py clear_db
    ```
