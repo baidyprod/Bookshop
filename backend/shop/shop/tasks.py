@@ -26,15 +26,14 @@ def books_sync():
     full_books_data = []
 
     next_page = True
-    page = 'http://store:8001/books/?page=1'
+    page = 1
 
     while next_page:
-        r = requests.get(page)
+        r = requests.get(f'http://store:8001/books/?page={page}')
         books_data = r.json()
 
-        if books_data['next']:
-            page_number = books_data['next'][-1]
-            page = f'http://store:8001/books/?page={page_number}'
+        if books_data.get('next'):
+            page += 1
         else:
             next_page = False
 
@@ -46,13 +45,20 @@ def books_sync():
     books_in_db.delete()
 
     for book_data in full_books_data:
+        img_url = book_data.get('image')
+        if img_url:
+            image_url = img_url.replace('http://store:8001', settings.API_DOMAIN)
+        else:
+            image_url = None
+
         book, _ = Book.objects.update_or_create(
             id_in_store=book_data['id'],
             defaults={
                 'title': book_data['title'],
                 'price': Decimal(book_data['price']),
                 'quantity': int(book_data['quantity']),
-                'description': book_data['description']
+                'description': book_data.get('description'),
+                'image': image_url
             }
         )
 
@@ -62,15 +68,14 @@ def successful_orders_sync():
     full_successful_orders_data = []
 
     next_page = True
-    page = 'http://store:8001/orders/?status=success&page=1'
+    page = 1
 
     while next_page:
-        r = requests.get(page)
+        r = requests.get(f'http://store:8001/orders/?status=success&page={page}')
         successful_orders_data = r.json()
 
-        if successful_orders_data['next']:
-            page_number = successful_orders_data['next'][-1]
-            page = f'http://store:8001/orders/?status=success&page={page_number}'
+        if successful_orders_data.get('next'):
+            page += 1
         else:
             next_page = False
 
@@ -96,15 +101,14 @@ def failed_orders_sync():
     full_failed_orders_data = []
 
     next_page = True
-    page = 'http://store:8001/orders/?status=fail&page=1'
+    page = 1
 
     while next_page:
-        r = requests.get(page)
+        r = requests.get(f'http://store:8001/orders/?status=fail&page={page}')
         failed_orders_data = r.json()
 
-        if failed_orders_data['next']:
-            page_number = failed_orders_data['next'][-1]
-            page = f'http://store:8001/orders/?status=fail&page={page_number}'
+        if failed_orders_data.get('next'):
+            page += 1
         else:
             next_page = False
 

@@ -8,7 +8,7 @@ class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ['id', 'title', 'price', 'quantity', 'description']
+        fields = ['id', 'title', 'price', 'quantity', 'description', 'image']
 
     def get_quantity(self, obj):
         return obj.bookitem_set.count()

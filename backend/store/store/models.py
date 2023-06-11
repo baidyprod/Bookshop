@@ -12,6 +12,7 @@ class Book(CreatedAtMixin):
     title = models.CharField(max_length=100)
     price = models.DecimalField(decimal_places=2, max_digits=10)
     description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='book_images/', null=True, blank=True)
 
     class Meta:
         verbose_name = 'Book'
