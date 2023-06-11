@@ -78,7 +78,7 @@ def cart_detail_and_create_order(request):
                     if quantity_requested > book.quantity:
                         messages.error(request, f"Cannot create order: {quantity_requested} {book.title} items are "
                                                 f"temporary unavailable. Please try again later.")
-                        return redirect('cart_detail')
+                        return redirect('cart_app:cart_detail')
 
                     order_items.append(OrderItem(order=order, book=book, quantity=quantity_requested))
                     order_items_dict[book.id_in_store] = quantity_requested

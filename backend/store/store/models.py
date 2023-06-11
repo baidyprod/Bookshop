@@ -12,7 +12,6 @@ class Book(CreatedAtMixin):
     title = models.CharField(max_length=100)
     price = models.DecimalField(decimal_places=2, max_digits=10)
     description = models.TextField(blank=True, null=True)
-    quantity = models.PositiveIntegerField()
 
     class Meta:
         verbose_name = 'Book'
@@ -20,6 +19,18 @@ class Book(CreatedAtMixin):
 
     def __str__(self):
         return self.title
+
+
+class BookItem(CreatedAtMixin):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    place = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = 'Book Item'
+        verbose_name_plural = 'Book Items'
+
+    def __str__(self):
+        return self.book.title
 
 
 class Order(CreatedAtMixin):
@@ -47,7 +58,7 @@ class Order(CreatedAtMixin):
 
 
 class OrderItem(CreatedAtMixin):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
 

@@ -1,3 +1,5 @@
+# from django_filters import rest_framework as filters
+
 from rest_framework import viewsets
 
 from store.models import Book, Order
@@ -10,5 +12,6 @@ class BookViewSet(viewsets.ModelViewSet):
 
 
 class OrderViewSet(viewsets.ModelViewSet):
+    # filter_backends = (filters.DjangoFilterBackend, )
     queryset = Order.objects.all().order_by('-created_at')
     serializer_class = OrderSerializer

@@ -23,15 +23,29 @@ def send_mail(subject, message, from_email, to_email):
 
 @shared_task
 def books_sync():
-    r = requests.get('http://store:8001/books/')
-    books_data = r.json()
+    full_books_data = []
 
-    book_ids_in_data = [book_data['id'] for book_data in books_data]
+    next_page = True
+    page = 'http://store:8001/books/?page=1'
+
+    while next_page:
+        r = requests.get(page)
+        books_data = r.json()
+
+        if books_data['next']:
+            page_number = books_data['next'][-1]
+            page = f'http://store:8001/books/?page={page_number}'
+        else:
+            next_page = False
+
+        full_books_data.extend(books_data['results'])
+
+    book_ids_in_data = [book_data['id'] for book_data in full_books_data]
 
     books_in_db = Book.objects.exclude(id_in_store__in=book_ids_in_data)
     books_in_db.delete()
 
-    for book_data in books_data:
+    for book_data in full_books_data:
         book, _ = Book.objects.update_or_create(
             id_in_store=book_data['id'],
             defaults={

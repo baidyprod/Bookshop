@@ -14,7 +14,7 @@ class BookList(generic.ListView):
     template_name = 'shop/home.html'
     context_object_name = 'books'
     paginate_by = 20
-    ordering = ['title']
+    ordering = ['title', ]
 
     def get_queryset(self):
         queryset = super().get_queryset()

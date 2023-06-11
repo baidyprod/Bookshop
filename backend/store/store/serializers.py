@@ -4,10 +4,14 @@ from store.models import Book, Order, OrderItem
 
 
 class BookSerializer(serializers.ModelSerializer):
+    quantity = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Book
         fields = ['id', 'title', 'price', 'quantity', 'description']
+
+    def get_quantity(self, obj):
+        return obj.bookitem_set.count()
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -17,7 +21,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    order_items = OrderItemSerializer(source='orderitem_set', many=True)
+    order_items = OrderItemSerializer(many=True)
 
     class Meta:
         model = Order
