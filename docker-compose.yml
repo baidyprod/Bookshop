@@ -3,7 +3,7 @@ services:
   shop:
     container_name: shop
     build:
-      context: ..
+      context: .
       dockerfile: docker/shop/Dockerfile
     networks:
       - shop_store_network
@@ -12,7 +12,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ../backend/shop:/app
+      - ./backend/shop:/app
     depends_on:
       - db_shop
       - redis
@@ -24,6 +24,7 @@ services:
       DB_PASSWORD: "postgres"
       DB_HOST: "db_shop"
       DB_PORT: "5432"
+    command: sh -c "sleep 20 && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
 
   db_shop:
     container_name: db_shop
@@ -54,8 +55,8 @@ services:
   celery:
     container_name: celery
     build:
-      context: ..
-      dockerfile: docker/shop/celery/Dockerfile
+      context: .
+      dockerfile: docker/shop/Dockerfile
     networks:
       - shop_store_network
       - shop_network
@@ -73,6 +74,7 @@ services:
       DB_PASSWORD: "postgres"
       DB_HOST: "db_shop"
       DB_PORT: "5432"
+    command: sh -c "sleep 20 && celery -A core worker --beat --loglevel=info"
 
   rabbitmq:
     container_name: rabbitmq
@@ -89,7 +91,7 @@ services:
   store:
     container_name: store
     build:
-      context: ..
+      context: .
       dockerfile: docker/store/Dockerfile
     networks:
       - shop_store_network
@@ -99,7 +101,7 @@ services:
     ports:
       - 8001:8001
     volumes:
-      - ../backend/store:/app
+      - ./backend/store:/app
     depends_on:
       - db_store
     restart: on-failure
@@ -145,7 +147,7 @@ services:
   nginx:
     container_name: nginx
     build:
-      context: ..
+      context: .
       dockerfile: docker/nginx/Dockerfile
     networks:
       - nginx_network

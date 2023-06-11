@@ -14,8 +14,12 @@ app.conf.beat_schedule = {
         'task': 'shop.tasks.books_sync',
         'schedule': crontab(minute='*/2'),
     },
-    'sync-order-statuses': {
-        'task': 'shop.tasks.orders_sync',
+    'sync-successful-order-statuses': {
+        'task': 'shop.tasks.successful_orders_sync',
+        'schedule': crontab(minute='*/1'),
+    },
+    'sync-failed-order-statuses': {
+        'task': 'shop.tasks.failed_orders_sync',
         'schedule': crontab(minute='*/1'),
     }
 }

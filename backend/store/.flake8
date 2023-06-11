@@ -1,4 +1,4 @@
 [flake8]
 max-line-length = 120
-exclude = venv,git,__pycache__,.idea,migrations,tests.py,core/settings
+exclude = venv,git,__pycache__,.idea,migrations,tests.py,core/settings,store/apps.py
 ignore = DJ08

@@ -30,8 +30,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'django_filters',
     'cart',
     'shop',
+    'cart_app',
+    'accounts',
 
 ]
 
@@ -133,6 +136,12 @@ INTERNAL_IPS = [
 
 ]
 
+# Used to form a link to a specific page in email for users
+DOMAIN = 'http://127.0.0.1:8000'
+
+# Used to generate a link to images in API
+API_DOMAIN = 'http://127.0.0.1:8001'
+
 def show_toolbar(request):  # noqa
     return True
 
@@ -142,7 +151,7 @@ DEBUG_TOOLBAR_CONFIG = {
 
 }
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'shop:home'
 
 CACHES = {
     'default': {

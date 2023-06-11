@@ -2,7 +2,7 @@
 
 This project is a containerized e-commerce book-selling platform consisting of multiple services.
 The main idea of this project is to use separate store API to update in it information about books and their quantity, process orders and order statuses.
-The shop service sends requests to API to: periodically synchronise info on books, create new orders, periodically synchronise info on customers' orders statuses.
+The shop service sends requests to API in order to: periodically synchronise info on books, create new orders, periodically synchronise info on customers' orders statuses.
 Customers also receive email notifications after: sending an order, order status changes in API.
 API requests and email sending is being performed by Celery service.
 
@@ -59,8 +59,8 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    ```
 5. Open terminal in root folder (Bookshop) and run:
    ```shell
-   docker-compose -f docker/docker-compose.yml build
-   docker-compose -f docker/docker-compose.yml up
+   docker-compose build
+   docker-compose up
    ```
    Wait a bit until terminal logs stop.
    This will be our terminal window in which the project is running. DON'T CLOSE IT UNTIL MY PROJECT IS IN USE.
@@ -69,7 +69,7 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
 6. Finally, we can access our shop service: localhost:8000, store service: localhost:8001, mailhog: localhost:8025
 7. This is not all. Now let's add some books to our store. But at first we need to create an admin user for store. Open a new terminal window in the root folder and write these commands:
     ```shell
-   docker-compose -f docker/docker-compose.yml exec store bash
+   docker-compose exec store bash
    ```
    ```python
    python manage.py createsuperuser
@@ -88,24 +88,48 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    token = Token.objects.create(user=admin_user)
    token.key
    ```
+   ```python
+   exit()
+   ```
+   ```python
+   exit
+   ```
    Then copy the key which was printed out (WITHOUT THE QUOTES) and paste it into backend/shop/.env file into TOKEN variable quotes. Close this terminal window.
 9. Open a new terminal window in the root folder. Now we are creating a shop admin:
     ```shell
-   docker-compose -f docker/docker-compose.yml exec shop bash
+   docker-compose exec shop bash
    ```
    ```python
    python manage.py createsuperuser
    ```
+   ```python
+   exit
+   ```
    You will have to enter what shell is asking.
-10. Finally, you are ready to go to localhost:8001/admin and to finally create some books.
-11. You are welcome to return to localhost:8000 to test my project further.
-12. To stop the project just press CMD+C (CTRL+C) and wait until all containers stop.
-13. To rerun the project go to the project root folder and paste this command:
+10. I have created a management command for you to populate store db with books and book items!
+Just open a new terminal window in a project folder and run this command:
    ```shell
-   docker-compose -f docker/docker-compose.yml up
+   docker-compose exec store bash
+   ```
+   ```python
+   python manage.py populate_db
+   ```
+   ```python
+   exit
+   ```
+This command will create 50 books and random quantity of book items of these books.
+11. You are welcome to go to the admin page of books and add a picture to any of them. It will be shown in the book's detail page in the shop!
+12. So, your main services are: 127.0.0.1:8000 (Shop), 127.0.0.1:8001 (Store), 127.0.0.1:8025 (Emails)
+13. To stop the project just press CMD+C (CTRL+C) and wait until all containers stop.
+14. To rerun the project go to the project root folder and paste this command:
+   ```shell
+   docker-compose up
    ```
    All data will be the same as in the previous sessions!
-
+15. Especially for you, I have created a management command to clear databases in one click! Just open a shell of shop/store (Examples higher) and run this command:
+   ```python
+   python manage.py clear_db
+   ```
 P.S.: Books are being synchronized every 2 minutes and orders statuses are being synchronized every 1 minute. So keep patient ;)
 
 __Thank You and have fun!__

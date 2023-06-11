@@ -34,28 +34,28 @@
         <tbody>
             {% for key, value in request.session.cart.items %}
             <tr>
-                <td class="align-middle">{{ value.title }}</td>
+                <td class="align-middle"><a href="{% url 'shop:book_detail' pk=value.product_id %}">{{ value.title }}</a></td>
                 <td id="price-{{ value.product_id }}" class="align-middle">${{ value.price }}</td>
                 <td id="quantity-{{ value.product_id }}" class="align-middle">{{ value.quantity }}</td>
                 <td id="total-{{ value.product_id }}" class="align-middle">${{ value.price|multiply:value.quantity|floatformat:2 }}</td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         {% if value.quantity > 1 %}
-                        <a id="decrement-{{ value.product_id }}" class="btn btn-outline-warning btn-sm" href="javascript:void(0)" onclick="decrementItem({{ value.product_id }}, '{% url 'item_decrement' id=value.product_id %}')">-</a>
+                        <a id="decrement-{{ value.product_id }}" class="btn btn-outline-warning btn-sm" href="javascript:void(0)" onclick="decrementItem({{ value.product_id }}, '{% url 'cart_app:item_decrement' id=value.product_id %}')">-</a>
                         {% else %}
-                        <a id="decrement-{{ value.product_id }}" style="display:none;" class="btn btn-outline-warning btn-sm" href="javascript:void(0)" onclick="decrementItem({{ value.product_id }}, '{% url 'item_decrement' id=value.product_id %}')">-</a>
+                        <a id="decrement-{{ value.product_id }}" style="display:none;" class="btn btn-outline-warning btn-sm" href="javascript:void(0)" onclick="decrementItem({{ value.product_id }}, '{% url 'cart_app:item_decrement' id=value.product_id %}')">-</a>
                         {% endif %}
-                        <a id="increment-{{ value.product_id }}" class="btn btn-outline-warning btn-sm" href="javascript:void(0)" onclick="incrementItem({{ value.product_id }}, '{% url 'item_increment' id=value.product_id %}')">+</a>
+                        <a id="increment-{{ value.product_id }}" class="btn btn-outline-warning btn-sm" href="javascript:void(0)" onclick="incrementItem({{ value.product_id }}, '{% url 'cart_app:item_increment' id=value.product_id %}')">+</a>
                     </div>
-                    <a class="btn btn-outline-danger btn-sm" href="{% url 'item_clear' id=value.product_id %}">Delete</a>
+                    <a class="btn btn-outline-danger btn-sm" href="{% url 'cart_app:item_clear' id=value.product_id %}">Delete</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
     <h3 id="total-order-price">Total order price: ${{ request.session.cart|total_price }}</h3>
-    <a class="btn btn-danger" href="{% url 'cart_clear' %}">Clear cart</a>
-    <form method="POST" action="{% url 'cart_detail' %}">
+    <a class="btn btn-danger" href="{% url 'cart_app:cart_clear' %}">Clear cart</a>
+    <form method="POST" action="{% url 'cart_app:cart_detail' %}">
         {% csrf_token %}
         {{ user_address_form.as_p }}
         <button class="btn btn-primary" type="submit">Create Order</button>
