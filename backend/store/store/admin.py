@@ -60,7 +60,7 @@ class BookAdmin(admin.ModelAdmin):
 class BookItemAdmin(admin.ModelAdmin):
     list_display = ['book', 'place']
     list_per_page = 20
-    search_fields = ['book', ]
+    search_fields = ['book__title', ]
 
     def book(self, obj):
         return obj.book.title
