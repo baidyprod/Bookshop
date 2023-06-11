@@ -11,7 +11,7 @@ class CreatedAtMixin(models.Model):
 class Book(CreatedAtMixin):
     title = models.CharField(max_length=100)
     price = models.DecimalField(decimal_places=2, max_digits=10)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True)
 
     class Meta:
         verbose_name = 'Book'
@@ -80,4 +80,4 @@ class OrderItemBookItem(CreatedAtMixin):
         verbose_name_plural = 'Order Item Book Items'
 
     def __str__(self):
-        return f"Order Item #{self.order_item.pk}"# - Book Item: {self.book_item.book.title}"
+        return f"Order Item #{self.order_item.pk}"
