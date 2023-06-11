@@ -85,3 +85,9 @@ class OrderAdmin(admin.ModelAdmin):
 #         return obj.book.title
 #
 #     book.admin_order_field = 'book__title'
+#
+#
+# @admin.register(OrderItemBookItem)
+# class OrderItemBookItemAdmin(admin.ModelAdmin):
+#     pass
+#
