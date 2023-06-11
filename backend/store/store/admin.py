@@ -1,11 +1,18 @@
 from django.contrib import admin
+from django import forms
 
-from store.models import Book, BookItem, Order, OrderItem
+from store.models import Book, BookItem, Order, OrderItem, OrderItemBookItem
 
 
 class BookItemInline(admin.TabularInline):
     model = BookItem
     extra = 0
+
+
+class OrderItemBookItemInline(admin.TabularInline):
+    model = OrderItemBookItem
+    extra = 0
+    autocomplete_fields = ['book_item', ]
 
 
 class OrderItemInline(admin.TabularInline):
@@ -68,7 +75,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ['status']
     readonly_fields = ['created_at']
     search_fields = ['user_email', ]
-    inlines = [OrderItemInline, ]
+    inlines = [OrderItemInline, OrderItemBookItemInline]
 #
 #
 # @admin.register(OrderItem)

@@ -30,7 +30,7 @@ class BookItem(CreatedAtMixin):
         verbose_name_plural = 'Book Items'
 
     def __str__(self):
-        return self.book.title
+        return f'{self.book.title} - {self.place}'
 
 
 class Order(CreatedAtMixin):
@@ -68,3 +68,16 @@ class OrderItem(CreatedAtMixin):
 
     def __str__(self):
         return f"Order #{self.order.pk} - Item: {self.book.title}"
+
+
+class OrderItemBookItem(CreatedAtMixin):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE)
+    book_item = models.ForeignKey(BookItem, on_delete=models.CASCADE, null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Order Item Book Item'
+        verbose_name_plural = 'Order Item Book Items'
+
+    def __str__(self):
+        return f"Order Item #{self.order_item.pk}"# - Book Item: {self.book_item.book.title}"
