@@ -24,3 +24,10 @@ def delete_book_items(sender, instance, created, **kwargs):
         order_item_book_items = OrderItemBookItem.objects.filter(order_item__in=order_items)
         book_item_pks = order_item_book_items.values_list('book_item__pk', flat=True).distinct()
         BookItem.objects.filter(pk__in=book_item_pks).delete()
+
+
+@receiver(post_save, sender=OrderItemBookItem)
+def delete_book_items(sender, instance, created, **kwargs):
+    if instance.order.status == Order.SUCCESS and instance.pk:
+        book_item = BookItem.objects.get(pk=instance.book_item.pk)
+        book_item.delete()
