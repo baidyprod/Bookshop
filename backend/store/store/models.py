@@ -55,7 +55,7 @@ class Order(CreatedAtMixin):
         verbose_name_plural = 'Orders'
 
     def __str__(self):
-        return f"Order #{self.pk}"
+        return f"Order #{self.pk} - {self.status}"
 
 
 class OrderItem(CreatedAtMixin):
