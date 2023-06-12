@@ -120,15 +120,25 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
     This command will create 50 books and random quantity of book items of these books.
 11. You are welcome to go to the admin page of books and add a picture to any of them. It will be shown in the book's detail page in the shop!
 12. So, your main services are: 127.0.0.1:8000 (Shop), 127.0.0.1:8001 (Store), 127.0.0.1:8025 (Emails)
-13. To stop the project just press CMD+C (CTRL+C) and wait until all containers stop.
-14. To rerun the project go to the project root folder and paste this command:
-    ```shell
-    docker-compose up
-    ```
-    All data will be the same as in the previous sessions!
-15. Especially for you, I have created a management command to clear databases in one click! Just open a shell of shop/store (Examples higher) and run this command:
+13. Now I want to walk you through the whole selling process.
+    1. Go to the shop (localhost:8000)
+    2. Register, add some books to cart and create an order
+    3. Now go to the admin page of the store (localhost:8001/admin)
+    4. Navigate to "Orders" tab
+    5. Choose the newly created order
+    6. Add BookItems to it, and change status to success
+    7. When you open this order again you can see that there are no BookItems left in it - they were entirely deleted from the store after marking the order as a successful one!
+    8. In case if you forget to mark the order as successful, the book items won't be deleted. You can open this order again, change the status to success - only after that, book items you have chosen for the order will be deleted.
+    9. I find this is the most interesting part of the project, because store-admin doesn't have to ha
+14. Especially for you, I have created a management command to clear databases in one click! Just open a shell of shop/store (Examples higher) and run this command:
     ```python
     python manage.py clear_db
+    ```
+15. To stop the project just press CMD+C (CTRL+C) and wait until all containers stop.
+    All data will be the same as in the previous sessions!
+16. To rerun the project go to the project root folder and paste this command:
+    ```shell
+    docker-compose up
     ```
 P.S.: Books are being synchronized every 2 minutes and orders statuses are being synchronized every 1 minute. So keep patient ;)
 
