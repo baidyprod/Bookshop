@@ -95,7 +95,7 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    ```python
    exit
    ```
-   Then copy the key which was printed out (WITHOUT THE QUOTES) and paste it into backend/shop/.env file into TOKEN variable quotes. Close this terminal window. Go to the main terminal window where the project is running and press CTRL+C (CMD+C on Mac) to stop the container. Now you have to go to the fifth step and do what I wrote there once again.
+   Then copy the key which was printed out (WITHOUT THE QUOTES) and paste it into backend/shop/.env file into TOKEN variable quotes. Close this terminal window. Go to the main terminal window where the project is running and press CTRL+C (CMD+C on Mac) to stop the container. Now you have to go to the fifth step and do what I wrote there once again. After you're done with it, return to the next step :)
 9. Open a new terminal window in the root folder. Now we are creating a shop admin:
     ```shell
    docker-compose exec shop bash
