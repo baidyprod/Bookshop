@@ -1,5 +1,3 @@
-from urllib.parse import urlencode
-
 from cart_app.custom_cart import CustomCart
 from cart_app.forms import UserAddressForm
 from cart_app.tasks import create_order_in_api as celery_create_order
@@ -7,7 +5,7 @@ from cart_app.tasks import create_order_in_api as celery_create_order
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render, reverse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 
 from shop.models import Book, Order, OrderItem
@@ -18,8 +16,7 @@ def cart_add(request, id):
     cart = CustomCart(request)
     product = Book.objects.get(id=id)
     cart.add(product=product)
-    redirect_url = f"{reverse('shop:home')}?{request.GET.urlencode()}"
-    return redirect(redirect_url)
+    return JsonResponse({'status': f'{product.title} added to cart'})
 
 
 @login_required(login_url=reverse_lazy('login'))

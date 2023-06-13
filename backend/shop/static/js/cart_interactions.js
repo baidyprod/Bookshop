@@ -34,6 +34,20 @@ function calculateTotalOrderPrice() {
   totalPriceElement.text('Total order price: $' + sum.toFixed(2));
 }
 
+function addItem(id, url) {
+    $.ajax({
+        url: url,
+        method: 'GET',
+        success: function(response) {
+            alertify.set('notifier','position', 'bottom-right');
+            alertify.success(response.status);
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
 function incrementItem(id, url) {
     $.ajax({
         url: url,

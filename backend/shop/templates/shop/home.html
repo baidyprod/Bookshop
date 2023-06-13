@@ -59,7 +59,7 @@
                     <td>
                         {% if book.quantity > 0 %}
                             {% if user.is_authenticated %}
-                                <a class="btn btn-warning btn-sm" href="{% url 'cart_app:cart_add' book.id %}?{{ request.GET.urlencode }}">Add to Cart</a>
+                                <a class="btn btn-warning btn-sm" onclick="return addItem({{ book.id }}, '{% url 'cart_app:cart_add' book.id %}')">Add to Cart</a>
                             {% else %}
                                 <a class="btn btn-warning btn-sm" href="{% url 'accounts:login' %}">Add to Cart</a>
                             {% endif %}
