@@ -136,8 +136,8 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
     ```python
     python manage.py clear_db
     ```
-14. To stop the project just press CMD+C (CTRL+C) and wait until all containers stop.
-    All data will be the same as in the previous sessions!
+14. To stop the project just press CMD+C (CTRL+C) in main terminal (where you run docker-compose up) and wait until all containers stop.
+    All the data will be the saved.
 15. To rerun the project go to the project root folder and paste this command:
     ```shell
     docker-compose up
