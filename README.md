@@ -67,8 +67,7 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    P.S.: ___1. If docker says something like "You don't have permission", add a word "sudo" before executing every command which begins with "docker". 
          2. If "docker-compose" not working, try writing like this: "docker compose".___
 
-6. Finally, we can access our shop service: localhost:8000, store service: localhost:8001, mailhog: localhost:8025
-7. This is not all. Now let's add some books to our store. But at first we need to create an admin user for store. Open a new terminal window in the root folder and write these commands:
+6. This is not all. Now let's add some books to our store. But at first we need to create an admin user for store. Open a new terminal window in the root folder and write these commands:
     ```shell
    docker-compose exec store bash
    ```
@@ -76,7 +75,7 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    python manage.py createsuperuser
    ```
    You will have to enter what shell is asking. Do not exit this terminal window.
-8. In this step let's create and save admin's token in order shop can send requests to store which will create orders in it. Run these commands:
+7. In this step let's create and save admin's token in order shop can send requests to store which will create orders in it. Run these commands:
    ```shell
    python manage.py shell
    ```
@@ -96,7 +95,7 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    exit
    ```
    Then copy the key which was printed out (WITHOUT THE QUOTES) and paste it into backend/shop/.env file into TOKEN variable quotes. Close this terminal window. Go to the main terminal window where the project is running and press CTRL+C (CMD+C on Mac) to stop the container. Now you have to go to the fifth step and do what I wrote there once again. After you're done with it, return to the next step :)
-9. Open a new terminal window in the root folder. Now we are creating a shop admin:
+8. Open a new terminal window in the root folder. Now we are creating a shop admin:
     ```shell
    docker-compose exec shop bash
    ```
@@ -107,7 +106,7 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    exit
    ```
    You will have to enter what shell is asking.
-10. I have created a management command for you to populate store db with books and book items!
+9. I have created a management command for you to populate store db with books and book items!
     Just open a new terminal window in a project folder and run this command:
     ```shell
     docker-compose exec store bash
@@ -119,9 +118,9 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
     exit
     ```
     This command will create 50 books and random quantity of book items of these books.
-11. You are welcome to go to the store admin page (127.0.0.1:8001/admin) click on "Books", choose any book and add a picture to it. The picture will be shown in the book's detail page in the shop!
-12. So, your main services are: 127.0.0.1:8000 (Shop), 127.0.0.1:8001 (Store), 127.0.0.1:8025 (Emails)
-13. Now I want to walk you through the whole selling process.
+10. You are welcome to go to the store admin page (127.0.0.1:8001/admin) click on "Books", choose any book and add a picture to it. The picture will be shown in the book's detail page in the shop!
+11. So, your main services are: 127.0.0.1:8000 (Shop), 127.0.0.1:8001 (Store), 127.0.0.1:8025 (Emails)
+12. Now I want to walk you through the whole selling process.
     1. Go to the shop (127.0.0.1:8000)
     2. Register, add some books to cart and create an order
     3. Now go to the admin page of the store (127.0.0.1:8001/admin)
@@ -133,13 +132,13 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
     9. I find this is the most interesting part of the project, because store-admin doesn't have to handle book items management after packing the order.
     10. Also, I hope you have noticed how easy it is to pack users order - just select book items which you want to pack, mark the order as the successful and hit "save"!
     11. Finally, you can go to Mailhog (127.0.0.1:8025) and notice an email, saying that your order was successfully proceeded.
-14. Especially for you, I have created a management command to clear databases after testing my project in one click! Just open a shell of shop/store (Examples higher) and run this command:
+13. Especially for you, I have created a management command to clear databases after testing my project in one click! Just open a shell of shop/store (Examples higher) and run this command:
     ```python
     python manage.py clear_db
     ```
-15. To stop the project just press CMD+C (CTRL+C) and wait until all containers stop.
+14. To stop the project just press CMD+C (CTRL+C) and wait until all containers stop.
     All data will be the same as in the previous sessions!
-16. To rerun the project go to the project root folder and paste this command:
+15. To rerun the project go to the project root folder and paste this command:
     ```shell
     docker-compose up
     ```
