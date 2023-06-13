@@ -64,7 +64,8 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    ```
    Wait a bit until terminal logs stop.
    This will be our terminal window in which the project is running. DON'T CLOSE IT UNTIL MY PROJECT IS IN USE.
-   P.S.: If "docker-compose" not working, try writing like this: "docker compose"
+   P.S.: ___1. If docker says something like "You don't have permission", add a word "sudo" before executing every command which begins with "docker". 
+         2. If "docker-compose" not working, try writing like this: "docker compose".___
 
 6. Finally, we can access our shop service: localhost:8000, store service: localhost:8001, mailhog: localhost:8025
 7. This is not all. Now let's add some books to our store. But at first we need to create an admin user for store. Open a new terminal window in the root folder and write these commands:
@@ -94,7 +95,7 @@ ___I don't guarantee you that this project will work on Windows! Docker works a 
    ```python
    exit
    ```
-   Then copy the key which was printed out (WITHOUT THE QUOTES) and paste it into backend/shop/.env file into TOKEN variable quotes. Close this terminal window.
+   Then copy the key which was printed out (WITHOUT THE QUOTES) and paste it into backend/shop/.env file into TOKEN variable quotes. Close this terminal window. Go to the main terminal window where the project is running and press CTRL+C (CMD+C on Mac) to stop the container. Now you have to go to the fifth step and do what I wrote there once again.
 9. Open a new terminal window in the root folder. Now we are creating a shop admin:
     ```shell
    docker-compose exec shop bash
