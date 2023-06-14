@@ -17,7 +17,7 @@ API requests and email sending is being performed by Celery service.
 - RabbitMQ (To receive tasks for celery)
 - Redis (To save celery tasks results)
 - Bootstrap (To make my shop service look awesome)
-- jQuery, AJAX (To increment and decrement items in cart without reloading the page)
+- jQuery, AJAX (To interact with cart without reloading the page)
 - MailHog (To simulate email sending)
 - Flake8 (To maintain the backend code readable)
 - Debug Toolbar (To help in database queries optimization)
